@@ -67,6 +67,14 @@ enum class MouseDragState {
     val isEnd get() = this == END
 }
 
+enum class ThrowState {
+    LEFT, RIGHT, CENTER;
+
+    val isLeft get() = this == LEFT
+    val isRight get() = this == RIGHT
+    val isCenter get() = this == CENTER
+}
+
 fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: CardController = CardController(this), callback: Views.(CardController) -> Unit): T {
     var dragging = false
     var sx = 0.0
@@ -119,6 +127,8 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
 }
 
 open class DraggableCardInfo(view: View) : CardController(view) {
+    var draggedTo: ThrowState = ThrowState.CENTER;
+
     val viewStartXY = Point()
 
     var viewStartX: Double get() = viewStartXY.x ; set(value) { viewStartXY.x = value }
@@ -164,11 +174,13 @@ fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
                 in 0.3..1.0 -> {
                     view.colorTransform = ColorTransform(2)
                     view.alpha = 0.6
+                    info.draggedTo = ThrowState.RIGHT
                 }
                 in -1.0..-0.3 -> {
 //                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
+
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
