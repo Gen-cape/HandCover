@@ -1,13 +1,9 @@
 import com.soywiz.korge.Korge
 import com.soywiz.korge.scene.Module
 import com.soywiz.korge.scene.Scene
-import com.soywiz.korge.view.image
-import com.soywiz.korge.view.position
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
-import com.soywiz.korim.format.readBitmap
 import com.soywiz.korinject.AsyncInjector
-import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.SizeInt
 import kotlin.reflect.KClass
 

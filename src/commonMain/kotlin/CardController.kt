@@ -152,8 +152,7 @@ open class DraggableCardInfo(view: View) : CardController(view) {
 
 fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
                                  autoMove: Boolean = true,
-                                 onDragAsCard: ((DraggableCardInfo) -> Unit)? = null,
-                                 onChooseCard: ((DraggableCardInfo) -> Unit)? = null): T {
+                                 onDragAsCard: ((DraggableCardInfo) -> Unit)? = null): T {
     val view = this
     val info = DraggableCardInfo(view)
     selector.onCardDrag(info = info) {
@@ -180,11 +179,12 @@ fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
 //                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
-
+                    info.draggedTo = ThrowState.LEFT
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
                     view.alpha = 0.9999
+                    info.draggedTo = ThrowState.CENTER
                 }
             }
         }
@@ -197,7 +197,6 @@ fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
         }
 //        println(view.pos)
         onDragAsCard?.invoke(info)
-        onChooseCard?.invoke(info)
         //println("DRAG: $dx, $dy, $start, $end")
     }
     return this

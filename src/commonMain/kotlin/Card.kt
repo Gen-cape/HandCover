@@ -1,7 +1,7 @@
+import com.soywiz.korge.input.onSwipe
 import com.soywiz.korge.view.*
 import com.soywiz.korge.view.tween.moveTo
 import com.soywiz.korge.view.tween.rotateBy
-import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korio.async.launchImmediately
