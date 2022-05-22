@@ -18,6 +18,7 @@ apply<KorgeGradlePlugin>()
 
 korge {
 	id = "com.drawci.game"
+	icon = File("../assets/W_bg.jpg")
 // To enable all targets at once
 
 	//targetAll()

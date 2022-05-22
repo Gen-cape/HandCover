@@ -29,12 +29,18 @@ class CardsScene : Scene() {
         }
         val cPoint = Point(143, 89)
         card("Lorem ipsum inmurito inguido aster") {
-//            position(143, 89)
+            position(143, 89)
             draggableAsCard(cPoint)
             onCardDrag{
                 when(it.throwState){
                     ThrowState.RIGHT -> {
-                        .rightChoice()
+                        println("RIGHT")
+                    }
+                    ThrowState.LEFT -> {
+                        println("LEFT")
+                    }
+                    ThrowState.CENTER -> {
+                        println("Center")
                     }
                 }
             }

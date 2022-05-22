@@ -2,6 +2,7 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.input.MouseEvents
+import com.soywiz.korge.input.SwipeDirection
 import com.soywiz.korge.input.mouse
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.ColorTransform
@@ -19,7 +20,7 @@ open class CardController(
         var time: DateTime = DateTime.EPOCH,
         var throwState: ThrowState = ThrowState.CENTER,
 ) {
-    fun setDraggedTo(side: ThrowState){
+    public fun setDraggedTo(side: ThrowState){
         throwState = side
     }
 
@@ -81,7 +82,8 @@ enum class ThrowState {
     val isCenter get() = this == CENTER
 }
 
-fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: CardController = CardController(this), callback: Views.(CardController) -> Unit): T {
+fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: CardController = CardController(this),
+                            callback: Views.(CardController) -> Unit): T {
     var dragging = false
     var sx = 0.0
     var sy = 0.0
@@ -133,6 +135,7 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
 }
 
 open class DraggableCardInfo(view: View) : CardController(view) {
+    var side: ThrowState = ThrowState.CENTER
     val viewStartXY = Point()
 
     var viewStartX: Double get() = viewStartXY.x ; set(value) { viewStartXY.x = value }
@@ -152,11 +155,13 @@ open class DraggableCardInfo(view: View) : CardController(view) {
 
     var viewDeltaX: Double get() = viewDeltaXY.x ; set(value) { viewDeltaXY.x = value }
     var viewDeltaY: Double get() = viewDeltaXY.y ; set(value) { viewDeltaXY.y = value }
+
 }
 
 fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
                                  autoMove: Boolean = true,
                                  onDragAsCard: ((DraggableCardInfo) -> Unit)? = null): T {
+
     val view = this
     val info = DraggableCardInfo(view)
     selector.onCardDrag(info = info) {
@@ -184,13 +189,15 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
 //                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
-                    info.throwState = ThrowState.LEFT
+//                    info.throwState = ThrowState.LEFT
 //                    draggedTo = ThrowState.LEFT
+                    info.setDraggedTo(ThrowState.LEFT)
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
                     view.alpha = 0.9999
-                    info.throwState = ThrowState.CENTER
+//                    info.throwState = ThrowState.CENTER
+                    info.setDraggedTo(ThrowState.CENTER)
                 }
             }
         }
