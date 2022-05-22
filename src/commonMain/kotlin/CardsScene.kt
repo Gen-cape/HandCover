@@ -33,9 +33,6 @@ class CardsScene : Scene() {
             card("Lorem ipsum inmurito inguido aster")
             draggableAsCard(cPoint)
             onCardDrag{
-                when(it.throwState){
-
-                }
             }
             onSwipe{
                 when(it.direction){
