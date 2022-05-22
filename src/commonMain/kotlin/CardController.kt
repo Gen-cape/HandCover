@@ -3,6 +3,7 @@ import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.input.MouseEvents
 import com.soywiz.korge.input.SwipeDirection
+import com.soywiz.korge.input.SwipeInfo
 import com.soywiz.korge.input.mouse
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.ColorTransform
@@ -48,7 +49,7 @@ open class CardController(
         dy = 0.0
     }
 
-    fun set(dx: Double, dy: Double, start: Boolean, end: Boolean, time: DateTime, draggedTo: ThrowState = ThrowState.CENTER): CardController {
+    fun set(dx: Double, dy: Double, start: Boolean, end: Boolean, time: DateTime, draggedTo: ThrowState): CardController {
         this.dx = dx
         this.dy = dy
         if (!lastDx.isNaN() && !lastDy.isNaN()) {
@@ -102,7 +103,8 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
         mousePos.copyFrom(views.nativeMouseXY)
     }
 
-    fun handle(it: MouseEvents, state: MouseDragState, direction : ThrowState = ThrowState.CENTER) {
+    fun handle(it: MouseEvents, state: MouseDragState) {
+        var direction : ThrowState
         if (state != MouseDragState.START && !dragging) return
         updateMouse()
         info.mouseEvents = it
@@ -123,6 +125,12 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
         cy = mousePos.y
         val dx = cx - sx
         val dy = cy - sy
+        when ((-cx + sx) / width){
+            in 0.3 .. 30.0 -> {direction = ThrowState.LEFT;} //println((-cx + sx) / width)}
+            in -30.0..-0.3 -> {direction = ThrowState.RIGHT;} //println((-cx + sx) / width)}
+            else -> {direction = ThrowState.CENTER;} // println((-cx + sx) / width)}
+        }
+
         callback(views(), info.set(dx, dy, state.isStart, state.isEnd, timeProvider.now(), direction))
     }
 
@@ -182,7 +190,7 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
                 in 0.3..1.0 -> {
                     view.colorTransform = ColorTransform(2)
                     view.alpha = 0.6
-                    info.throwState = ThrowState.RIGHT
+//                    info.throwState = ThrowState.RIGHT
 //                    draggedTo = ThrowState.RIGHT
                 }
                 in -1.0..-0.3 -> {
@@ -191,13 +199,13 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
                     view.alpha = 0.6
 //                    info.throwState = ThrowState.LEFT
 //                    draggedTo = ThrowState.LEFT
-                    info.setDraggedTo(ThrowState.LEFT)
+//                    info.setDraggedTo(ThrowState.LEFT)
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
                     view.alpha = 0.9999
 //                    info.throwState = ThrowState.CENTER
-                    info.setDraggedTo(ThrowState.CENTER)
+//                    info.setDraggedTo(ThrowState.CENTER)
                 }
             }
         }
@@ -206,6 +214,7 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
             view.xy(sp)
             view.alpha = 1.0
             view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
+//            info.setDraggedTo(ThrowState.CENTER)
 //            info.viewStartXY.copyFrom(sp)
         }
 //        println(view.pos)
