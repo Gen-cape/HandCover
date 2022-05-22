@@ -1,4 +1,3 @@
-import com.soywiz.korge.input.onMouseDrag
 import com.soywiz.korge.input.onSwipe
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
@@ -34,7 +33,14 @@ class CardsScene : Scene() {
             card("Lorem ipsum inmurito inguido aster")
             draggableAsCard(cPoint)
             onCardDrag{
+                when(it.throwState){
 
+                }
+            }
+            onSwipe{
+                when(it.direction){
+
+                }
             }
         }
     }

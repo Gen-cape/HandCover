@@ -17,7 +17,12 @@ open class CardController(
         var end: Boolean = false,
         var startTime: DateTime = DateTime.EPOCH,
         var time: DateTime = DateTime.EPOCH,
+        var throwState: ThrowState = ThrowState.CENTER,
 ) {
+    fun setDraggedTo(side: ThrowState){
+        throwState = side
+    }
+
     lateinit var mouseEvents: MouseEvents
     val elapsed: TimeSpan get() = time - startTime
 
@@ -42,7 +47,7 @@ open class CardController(
         dy = 0.0
     }
 
-    fun set(dx: Double, dy: Double, start: Boolean, end: Boolean, time: DateTime): CardController {
+    fun set(dx: Double, dy: Double, start: Boolean, end: Boolean, time: DateTime, draggedTo: ThrowState = ThrowState.CENTER): CardController {
         this.dx = dx
         this.dy = dy
         if (!lastDx.isNaN() && !lastDy.isNaN()) {
@@ -55,6 +60,7 @@ open class CardController(
         this.end = end
         if (start) this.startTime = time
         this.time = time
+        this.throwState = draggedTo
         return this
     }
 }
@@ -94,7 +100,7 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
         mousePos.copyFrom(views.nativeMouseXY)
     }
 
-    fun handle(it: MouseEvents, state: MouseDragState) {
+    fun handle(it: MouseEvents, state: MouseDragState, direction : ThrowState = ThrowState.CENTER) {
         if (state != MouseDragState.START && !dragging) return
         updateMouse()
         info.mouseEvents = it
@@ -115,7 +121,7 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
         cy = mousePos.y
         val dx = cx - sx
         val dy = cy - sy
-        callback(views(), info.set(dx, dy, state.isStart, state.isEnd, timeProvider.now()))
+        callback(views(), info.set(dx, dy, state.isStart, state.isEnd, timeProvider.now(), direction))
     }
 
     this.mouse {
@@ -127,8 +133,6 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
 }
 
 open class DraggableCardInfo(view: View) : CardController(view) {
-    var draggedTo: ThrowState = ThrowState.CENTER;
-
     val viewStartXY = Point()
 
     var viewStartX: Double get() = viewStartXY.x ; set(value) { viewStartXY.x = value }
@@ -150,7 +154,7 @@ open class DraggableCardInfo(view: View) : CardController(view) {
     var viewDeltaY: Double get() = viewDeltaXY.y ; set(value) { viewDeltaXY.y = value }
 }
 
-fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
+fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
                                  autoMove: Boolean = true,
                                  onDragAsCard: ((DraggableCardInfo) -> Unit)? = null): T {
     val view = this
@@ -173,18 +177,18 @@ fun <T : View> T.draggableAsCard(sp : Point, selector: View = this,
                 in 0.3..1.0 -> {
                     view.colorTransform = ColorTransform(2)
                     view.alpha = 0.6
-                    info.draggedTo = ThrowState.RIGHT
+//                    draggedTo = ThrowState.RIGHT
                 }
                 in -1.0..-0.3 -> {
 //                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
-                    info.draggedTo = ThrowState.LEFT
+//                    draggedTo = ThrowState.LEFT
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
                     view.alpha = 0.9999
-                    info.draggedTo = ThrowState.CENTER
+                    info.throwState = ThrowState.CENTER
                 }
             }
         }
