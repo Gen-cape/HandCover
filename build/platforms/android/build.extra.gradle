@@ -1,0 +1,6 @@
+// When this file exists, it won't be overriden
+android{
+    packagingOptions{
+        exclude '**/androidsupportmultidexversion.txt'
+    }
+}

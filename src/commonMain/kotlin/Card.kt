@@ -42,17 +42,7 @@ class Card(
             textSize = 14.0
             centerXOn(bg)
             centerYBetween(218, 286)
-//			centerBetween(9, 218, 211,286)
-//			alignTopToBottomOf(temp_img, 28)
-//			alignLeftToLeftOf(bg, (temp_img.width - width) / 2)
             setTextBounds(Rectangle(9, 215, 202, 58))
         }
-//		onSwipe(20.0) {
-//			when (it.direction) {
-////				SwipeDirection.LEFT ->
-////				SwipeDirection.RIGHT -> moveCardsTo("Right")
-////				SwipeDirection.TOP -> pull()
-//			}
-//		}
     }
 }

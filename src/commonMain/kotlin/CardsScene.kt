@@ -23,23 +23,19 @@ class CardsScene : Scene() {
             alignLeftToRightOf(connectionsBg)
             alignBottomToTopOf(cardBg)
         }
-        val _bg = solidRect(68, 68, RGBA(87, 52, 52)) { // Color: 573434
+        val sanity_bg = solidRect(68, 68, RGBA(87, 52, 52)) { // Color: 573434
             alignLeftToRightOf(moneyBg)
             alignBottomToTopOf(cardBg)
         }
         val cPoint = Point(143, 89)
-        container {
-            position(143, 89)
-            card("Lorem ipsum inmurito inguido aster")
+        card("Lorem ipsum inmurito inguido aster") {
+//            position(143, 89)
             draggableAsCard(cPoint)
             onCardDrag{
                 when(it.throwState){
-                    ThrowState.CENTER -> println()
-                }
-            }
-            onSwipe{
-                when(it.direction){
-
+                    ThrowState.RIGHT -> {
+                        .rightChoice()
+                    }
                 }
             }
         }
