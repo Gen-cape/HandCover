@@ -177,12 +177,14 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
                 in 0.3..1.0 -> {
                     view.colorTransform = ColorTransform(2)
                     view.alpha = 0.6
+                    info.throwState = ThrowState.RIGHT
 //                    draggedTo = ThrowState.RIGHT
                 }
                 in -1.0..-0.3 -> {
 //                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
+                    info.throwState = ThrowState.LEFT
 //                    draggedTo = ThrowState.LEFT
                 }
                 else -> {
