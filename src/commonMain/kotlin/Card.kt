@@ -1,10 +1,11 @@
-import com.soywiz.korge.input.onSwipe
+
 import com.soywiz.korge.view.*
 import com.soywiz.korge.view.tween.moveTo
 import com.soywiz.korge.view.tween.rotateBy
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korio.async.launchImmediately
+import com.soywiz.korio.file.VfsFile
 import com.soywiz.korma.geom.Angle
 import com.soywiz.korma.geom.Rectangle
 import com.soywiz.korma.geom.cos
@@ -21,14 +22,17 @@ public fun Stage.specialRotate(container: Container, x: Double, y: Double, angle
 
 //fun Container.card (description: String, function: () -> Unit) = Card(description).addTo(this)
 inline fun Container.card(
-        description : String, callback:  Card.() -> Unit = {}
-): Card = Card(description).addTo(this, callback)
+        description: String, imgLink: VfsFile, callback:  Card.() -> Unit = {}
+): Card = Card(description, imgLink).addTo(this, callback)
 class Card(
-        var description: String
+        private var description: String, img: VfsFile
 ) : Container() {
-    constructor(description: String,img: Image) : this(description) {
+    public val imgLink = img
+    val suspectionEffect: Double = 0.0
+    val moneyEffect: Double = 0.0
+    val connectionsEffect: Double = 0.0
+    val sanityEffect: Double = 0.0
 
-    }
     fun pull() {
         this.removeFromParent()
     }

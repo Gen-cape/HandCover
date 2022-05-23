@@ -1,27 +1,29 @@
+
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeProvider
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.input.MouseEvents
-import com.soywiz.korge.input.SwipeDirection
-import com.soywiz.korge.input.SwipeInfo
 import com.soywiz.korge.input.mouse
-import com.soywiz.korge.view.*
+import com.soywiz.korge.view.View
+import com.soywiz.korge.view.Views
+import com.soywiz.korge.view.rotation
+import com.soywiz.korge.view.xy
 import com.soywiz.korim.color.ColorTransform
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.geom.times
 
 open class CardController(
-        val view: View,
-        var dx: Double = 0.0,
-        var dy: Double = 0.0,
+        private val view: View,
+        private var dx: Double = 0.0,
+        private var dy: Double = 0.0,
         var start: Boolean = false,
         var end: Boolean = false,
-        var startTime: DateTime = DateTime.EPOCH,
-        var time: DateTime = DateTime.EPOCH,
+        private var startTime: DateTime = DateTime.EPOCH,
+        private var time: DateTime = DateTime.EPOCH,
         var throwState: ThrowState = ThrowState.CENTER,
 ) {
-    public fun setDraggedTo(side: ThrowState){
+    fun setDraggedTo(side: ThrowState){
         throwState = side
     }
 
@@ -37,8 +39,8 @@ open class CardController(
     private var lastDx: Double = Double.NaN
     private var lastDy: Double = Double.NaN
 
-    var deltaDx: Double = 0.0
-    var deltaDy: Double = 0.0
+    private var deltaDx: Double = 0.0
+    private var deltaDy: Double = 0.0
 
     fun reset() {
         lastDx = Double.NaN
@@ -104,7 +106,6 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
     }
 
     fun handle(it: MouseEvents, state: MouseDragState) {
-        var direction : ThrowState
         if (state != MouseDragState.START && !dragging) return
         updateMouse()
         info.mouseEvents = it
@@ -120,15 +121,19 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
             MouseDragState.END -> {
                 dragging = false
             }
+            else -> {}
         }
         cx = mousePos.x
         cy = mousePos.y
         val dx = cx - sx
         val dy = cy - sy
-        when ((-cx + sx) / width){
-            in 0.3 .. 30.0 -> {direction = ThrowState.LEFT;} //println((-cx + sx) / width)}
-            in -30.0..-0.3 -> {direction = ThrowState.RIGHT;} //println((-cx + sx) / width)}
-            else -> {direction = ThrowState.CENTER;} // println((-cx + sx) / width)}
+        val direction : ThrowState = when ((-cx + sx) / width){
+            in 0.5 .. 30.0 -> {
+                ThrowState.LEFT;}
+            in -30.0..-0.5 -> {
+                ThrowState.RIGHT;}
+            else -> {
+                ThrowState.CENTER;}
         }
 
         callback(views(), info.set(dx, dy, state.isStart, state.isEnd, timeProvider.now(), direction))

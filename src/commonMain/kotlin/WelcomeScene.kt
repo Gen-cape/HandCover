@@ -13,12 +13,12 @@ import com.soywiz.korio.file.std.resourcesVfs
 
 class WelcomeScene : Scene() {
     override suspend fun Container.sceneInit() {
-        val bg = image(resourcesVfs["W_bg.jpg"].readBitmap()) {
+        image(resourcesVfs["W_bg.jpg"].readBitmap()) {
             scaledWidth = 512.0
             scaledHeight = 512.0
             position(0, 0)
         }
-        val start_btn = roundRect(190.0, 55.0, 12.0, 12.0, RGBA(217, 40, 24)) { // Color: D92818
+        val startBtn = roundRect(190.0, 55.0, 12.0, 12.0, RGBA(217, 40, 24)) { // Color: D92818
             position(170, 85)
             alpha = 0.5
             onOver { alpha = 1.0 }
@@ -33,10 +33,13 @@ class WelcomeScene : Scene() {
         text("START", 20.0, Colors.WHITE) {
 //            alignTopToTopOf(start_btn, 7)
 //            alignLeftToLeftOf(start_btn, 10)
-            centerOn(start_btn)
+            centerOn(startBtn)
 //            setTextBounds(Rectangle(178, 92, 170, 41))
             onClick{
-
+                sceneContainer.changeTo<CardsScene>(
+                        transition = MaskTransition(TransitionFilter.Transition.VERTICAL),
+                        time = 0.1.seconds
+                )
             }
         }
 //        val start_txt = text("START", 20.0, Colors.WHITE)

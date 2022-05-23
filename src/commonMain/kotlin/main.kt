@@ -11,16 +11,16 @@ suspend fun main() = Korge(Korge.Config(module = MainModule))
 
 object MainModule : Module() {
 	//	override val mainScene: KClass<out Scene> = WelcomeScene::class
-	override val mainScene: KClass<out Scene> = CardsScene::class
+	override val mainScene: KClass<out Scene> = WelcomeScene::class
 	override val bgcolor: RGBA
 		get() = Colors.BLACK
 	override val size: SizeInt
 		get() = SizeInt(512, 512)
-	override val icon: String?
+	override val icon: String
 		get() = "resources/W_bg.jpg"
 	//        get() = super.icon
 	override val title: String
-		get() = "Test build"
+		get() = "Drawci"
 	override suspend fun AsyncInjector.configure() {
 		mapPrototype { WelcomeScene() }
 		mapPrototype { CardsScene() }
