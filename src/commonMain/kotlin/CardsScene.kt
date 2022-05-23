@@ -7,7 +7,7 @@ import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 
 class CardsScene : Scene() {
-    val deck = arrayListOf<Card>()
+    val deck = arrayListOf<Card>(Card("Держите артефакт в дорогу", resourcesVfs["c2.png"]))
     override suspend fun Container.sceneInit() {
         val economy = Economy()
 //        addComponent(SwipeProcessor(this))
@@ -53,29 +53,33 @@ class CardsScene : Scene() {
         }.alignTopToTopOf(sanityBg, ).alignLeftToLeftOf(sanityBg)
 
         val cPoint = Point(143, 89)
+        val n = resourcesVfs["c2.png"].readBitmap()
         card("Вам предлагают поехать \nв Берлин ради расследования", resourcesVfs["c1.png"]) {
-            val i = image(this.imgLink.readBitmap()).alignLeftToLeftOf(this@card, 9)
-                    .alignTopToTopOf(this@card, 28)
-            i.scaledHeight = 181.0
-            i.scaledWidth = 202.0
+            var i = image(this.imgLink.readBitmap()){scaledWidth = 202.0; scaledHeight = 181.0}.alignLeftToLeftOf(this@card, 9)
+                    .alignTopToTopOf(this@card, 28).addTo(this@card)
             position(143, 89)
             draggableAsCard(cPoint)
             onCardDrag{
-                when(it.throwState){
-                    ThrowState.RIGHT -> {
-                        economy.suspection += suspectionEffect
-                        economy.sanity += sanityEffect
-                        economy.connections += connectionsEffect
-                        economy.money += moneyEffect
-                    }
-                    ThrowState.LEFT -> {
-                        economy.suspection -= suspectionEffect
-                        economy.sanity -= sanityEffect
-                        economy.connections -= connectionsEffect
-                        economy.money -= moneyEffect
-                    }
-                    ThrowState.CENTER -> {
+                if (it.end) {
+                    when (it.throwState) {
+                        ThrowState.RIGHT -> {
+                            economy.suspection += suspectionEffect
+                            economy.sanity += sanityEffect
+                            economy.connections += connectionsEffect
+                            economy.money += moneyEffect
+                            i.removeFromParent()
+                            image(n){scaledWidth = 202.0; scaledHeight = 181.0}.alignLeftToLeftOf(this@card, 9)
+                                    .alignTopToTopOf(this@card, 28).addTo(this@card)
+                        }
+                        ThrowState.LEFT -> {
+                            economy.suspection -= suspectionEffect
+                            economy.sanity -= sanityEffect
+                            economy.connections -= connectionsEffect
+                            economy.money -= moneyEffect
+                        }
+                        ThrowState.CENTER -> {
 //                        println("Center")
+                        }
                     }
                 }
             }
