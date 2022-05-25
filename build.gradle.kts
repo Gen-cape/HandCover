@@ -21,7 +21,7 @@ apply<KorgeGradlePlugin>()
 korge {
 	id = "com.drawci.game"
 	icon = project.projectDir["src/commonMain/resources/icon.png"]
-	name = "Drawchi"
+	name = "HandCover"
 // To enable all targets at once
 
 	//targetAll()
