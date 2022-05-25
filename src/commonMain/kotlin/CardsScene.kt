@@ -3,13 +3,15 @@ import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 
 class CardsScene : Scene() {
-    val deck = arrayListOf<Card>(Card("Держите артефакт в дорогу", resourcesVfs["c2.png"]))
+    var vfsToRead = arrayListOf<VfsFile>(resourcesVfs["c2.png"])
     override suspend fun Container.sceneInit() {
         val economy = Economy()
+    var deck = arrayListOf<Card>()
 //        addComponent(SwipeProcessor(this))
         solidRect(512, 512, RGBA(196, 196, 196)).xy(0, 0) // Color: c4c4c4
         solidRect(512, 62, RGBA(89, 59, 2)).xy(0, 450).alignBottomToBottomOf(sceneContainer) // Color: 593B02
