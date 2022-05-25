@@ -20,7 +20,6 @@ class CardsScene : Scene() {
             deck.add(Card(txtToRead[i], vfsToRead[i]))
         }
         val economy = Economy()
-//        addComponent(SwipeProcessor(this))
         solidRect(512, 512, RGBA(196, 196, 196)).xy(0, 0) // Color: c4c4c4
         solidRect(512, 62, RGBA(89, 59, 2)).xy(0, 450).alignBottomToBottomOf(sceneContainer) // Color: 593B02
         val _backgroundLayer = container{}
@@ -30,15 +29,15 @@ class CardsScene : Scene() {
             alignLeftToLeftOf(cardBg)
             alignBottomToTopOf(cardBg)
         }.addTo(_backgroundLayer)
-        val connectionsBg = solidRect(68, 68, RGBA(136, 92, 92)) { // Color:885C5C
+        val connectionsBg = solidRect(68, 68, RGBA(174,179,171)) { // Color:885C5C
             alignLeftToRightOf(suspectionBg)
             alignBottomToTopOf(cardBg)
         }.addTo(_backgroundLayer)
-        val moneyBg = solidRect(68, 68, RGBA(126, 71, 71)) { // Color: 7E4747
+        val moneyBg = solidRect(68, 68, RGBA(173,164,114)) { // Color: 7E4747
             alignLeftToRightOf(connectionsBg)
             alignBottomToTopOf(cardBg)
         }
-        val sanityBg = solidRect(68, 68, RGBA(87, 52, 52)) { // Color: 573434
+        val sanityBg = solidRect(68, 68, RGBA(138,200,209)) { // Color: 573434
             alignLeftToRightOf(moneyBg)
             alignBottomToTopOf(cardBg)
         }.addTo(_backgroundLayer)

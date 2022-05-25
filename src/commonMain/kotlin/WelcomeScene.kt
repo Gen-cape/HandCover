@@ -31,10 +31,7 @@ class WelcomeScene : Scene() {
             }
         }
         text("START", 20.0, Colors.WHITE) {
-//            alignTopToTopOf(start_btn, 7)
-//            alignLeftToLeftOf(start_btn, 10)
             centerOn(startBtn)
-//            setTextBounds(Rectangle(178, 92, 170, 41))
             onClick{
                 sceneContainer.changeTo<CardsScene>(
                         transition = MaskTransition(TransitionFilter.Transition.VERTICAL),
@@ -42,8 +39,5 @@ class WelcomeScene : Scene() {
                 )
             }
         }
-//        val start_txt = text("START", 20.0, Colors.WHITE)
-//            .alignLeftToLeftOf(start_btn, 10).alignTopToTopOf(start_btn, 7)
-//            .setTextBounds(Rectangle(178, 92, 170, 41))
     }
 }

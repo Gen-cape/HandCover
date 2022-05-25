@@ -20,7 +20,6 @@ fun Stage.specialRotate(container: Container, x: Double, y: Double, angle: Angle
     container.moveTo(toX, toY)
 }
 
-//fun Container.card (description: String, function: () -> Unit) = Card(description).addTo(this)
 inline fun Container.card(
         description: String, imgLink: VfsFile, callback:  Card.() -> Unit = {}
 ): Card = Card(description, imgLink).addTo(this, callback)

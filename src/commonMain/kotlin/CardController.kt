@@ -100,8 +100,6 @@ fun <T : View> T.onCardDrag(timeProvider: TimeProvider = TimeProvider, info: Car
 
     fun updateMouse() {
         val views = views()
-        //println("views.globalMouse=${views.globalMouseXY}, views.nativeMouse=${views.nativeMouseXY}")
-        //mousePos.copyFrom(views.globalMouseXY)
         mousePos.copyFrom(views.nativeMouseXY)
     }
 
@@ -178,39 +176,27 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
     val view = this
     val info = DraggableCardInfo(view)
     selector.onCardDrag(info = info) {
-//        view.xy(bx, by) // start
         if (info.start) {
-//            info.viewStartXY.copyFrom(view.pos)
             info.viewStartXY.copyFrom(sp)
         }
-        //println("localDXY=${info.localDX(view)},${info.localDY(view)}")
         info.viewPrevXY.copyFrom(view.pos)
         info.viewNextXY.setTo(info.viewStartX + info.localDX(view), info.viewStartY + info.localDY(view))
         info.viewDeltaXY.setTo(info.viewNextX - info.viewPrevX, info.viewNextY - info.viewPrevY)
         if (autoMove) {
             view.rotation(45.degrees * ((-info.viewStartX + info.viewNextX) / virtualWidth))
             view.xy(info.viewNextXY)
-//            println((-info.viewStartX + info.viewNextX) / virtualWidth)
             when ((-info.viewStartX + info.viewNextX) / virtualWidth) {
                 in 0.3..1.0 -> {
                     view.colorTransform = ColorTransform(2)
                     view.alpha = 0.6
-//                    info.throwState = ThrowState.RIGHT
-//                    draggedTo = ThrowState.RIGHT
                 }
                 in -1.0..-0.3 -> {
-//                    view.colorTransform = ColorTransform(0.2)
                     view.colorTransform = ColorTransform(-2)
                     view.alpha = 0.6
-//                    info.throwState = ThrowState.LEFT
-//                    draggedTo = ThrowState.LEFT
-//                    info.setDraggedTo(ThrowState.LEFT)
                 }
                 else -> {
                     view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
                     view.alpha = 0.9999
-//                    info.throwState = ThrowState.CENTER
-//                    info.setDraggedTo(ThrowState.CENTER)
                 }
             }
         }
@@ -219,12 +205,8 @@ fun <T : View> T.draggableAsCard(sp : Point,  selector: View = this,
             view.xy(sp)
             view.alpha = 1.0
             view.colorTransform = ColorTransform(1, 1, 1, 1, 0, 0, 0, 0)
-//            info.setDraggedTo(ThrowState.CENTER)
-//            info.viewStartXY.copyFrom(sp)
         }
-//        println(view.pos)
         onDragAsCard?.invoke(info)
-        //println("DRAG: $dx, $dy, $start, $end")
     }
     return this
 }

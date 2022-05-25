@@ -17,7 +17,7 @@ object MainModule : Module() {
 	override val size: SizeInt
 		get() = SizeInt(512, 512)
 	override val icon: String
-		get() = "resources/W_bg.jpg"
+		get() = "../assets/icon.png"
 	//        get() = super.icon
 	override val title: String
 		get() = "Drawci"

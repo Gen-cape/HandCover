@@ -1,4 +1,5 @@
-import com.soywiz.korge.gradle.*
+import com.soywiz.korge.gradle.KorgeGradlePlugin
+import com.soywiz.korge.gradle.korge
 
 buildscript {
 	val korgePluginVersion: String by project
@@ -18,7 +19,8 @@ apply<KorgeGradlePlugin>()
 
 korge {
 	id = "com.drawci.game"
-	icon = File("../assets/W_bg.jpg")
+	icon = File("../assets/icon.png")
+	name = "Drawchi"
 // To enable all targets at once
 
 	//targetAll()
