@@ -45,6 +45,7 @@ class Card : Container {
     val moneyEffect: Double = 0.0
     val connectionsEffect: Double = 0.0
     val sanityEffect: Double = 0.0
+    val pair = Pair("Df choice 1", "Df choice 2")
     
     fun pull() {
         this.removeFromParent()

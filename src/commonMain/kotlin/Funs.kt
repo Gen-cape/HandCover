@@ -34,4 +34,5 @@ public fun wrapLines(text: String, textSize: Double, width: Double, font: Font):
 
 
 class Funs {
+    // Keeping class for possible functions with anchor
 }
