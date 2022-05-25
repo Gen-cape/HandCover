@@ -1,3 +1,4 @@
+
 import com.soywiz.korge.Korge
 import com.soywiz.korge.scene.Module
 import com.soywiz.korge.scene.Scene
@@ -17,10 +18,10 @@ object MainModule : Module() {
 	override val size: SizeInt
 		get() = SizeInt(512, 512)
 	override val icon: String
-		get() = "../assets/icon.png"
+		get() = "src/commonMain/resources/icon.png"
 	//        get() = super.icon
 	override val title: String
-		get() = "Drawci"
+		get() = "HandCover"
 	override suspend fun AsyncInjector.configure() {
 		mapPrototype { WelcomeScene() }
 		mapPrototype { CardsScene() }
