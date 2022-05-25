@@ -2,16 +2,24 @@
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.RGBA
+import com.soywiz.korim.font.DefaultTtfFont
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 
+public fun easyWrap(text: String): String{
+    return wrapLines(text, 14.0, 220.0, DefaultTtfFont)
+}
 class CardsScene : Scene() {
+    var txtToRead = arrayListOf<String>("обро пожаловать, твой путь лежит на новую миссию")
     var vfsToRead = arrayListOf<VfsFile>(resourcesVfs["c2.png"])
     override suspend fun Container.sceneInit() {
+        var deck = arrayListOf<Card>()
+        for (i in 0 until vfsToRead.size){
+            deck.add(Card(txtToRead[i], vfsToRead[i]))
+        }
         val economy = Economy()
-    var deck = arrayListOf<Card>()
 //        addComponent(SwipeProcessor(this))
         solidRect(512, 512, RGBA(196, 196, 196)).xy(0, 0) // Color: c4c4c4
         solidRect(512, 62, RGBA(89, 59, 2)).xy(0, 450).alignBottomToBottomOf(sceneContainer) // Color: 593B02
@@ -56,7 +64,7 @@ class CardsScene : Scene() {
 
         val cPoint = Point(143, 89)
         val n = resourcesVfs["c2.png"].readBitmap()
-        card("Вам предлагают поехать \nв Берлин ради расследования", resourcesVfs["c1.png"]) {
+        card(easyWrap("Вам предлагают поехать в Берлин ради расследования"), resourcesVfs["c1.png"]) {
             var i = image(this.imgLink.readBitmap()){scaledWidth = 202.0; scaledHeight = 181.0}.alignLeftToLeftOf(this@card, 9)
                     .alignTopToTopOf(this@card, 28).addTo(this@card)
             position(143, 89)
