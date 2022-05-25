@@ -64,7 +64,7 @@ class CardsScene : Scene() {
 
         val cPoint = Point(143, 89)
         val n = resourcesVfs["c2.png"].readBitmap()
-        card(easyWrap("Вам предлагают поехать в Берлин ради расследования"), resourcesVfs["c1.png"]) {
+        card(easyWrap("Начните приключение в новом мире"), resourcesVfs["c1.png"]) {
             var i = image(this.imgLink.readBitmap()){scaledWidth = 202.0; scaledHeight = 181.0}.alignLeftToLeftOf(this@card, 9)
                     .alignTopToTopOf(this@card, 28).addTo(this@card)
             position(143, 89)
