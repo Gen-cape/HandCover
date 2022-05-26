@@ -1,4 +1,5 @@
 import com.soywiz.korge.gradle.KorgeGradlePlugin
+import com.soywiz.korge.gradle.Orientation
 import com.soywiz.korge.gradle.korge
 import com.soywiz.korge.gradle.util.get
 
@@ -22,6 +23,7 @@ korge {
 	id = "com.drawci.game"
 	icon = project.projectDir["src/commonMain/resources/icon.png"]
 	name = "HandCover"
+	orientation = Orientation.PORTRAIT
 // To enable all targets at once
 
 	//targetAll()

@@ -17,13 +17,14 @@ object MainModule : Module() {
 		get() = Colors.BLACK
 	override val size: SizeInt
 		get() = SizeInt(512, 512)
-	override val icon: String
-		get() = "src/commonMain/resources/icon.png"
+//	override val icon: String
+//		get() = "src/commonMain/resources/icon.png"
 	//        get() = super.icon
 	override val title: String
 		get() = "HandCover"
 	override suspend fun AsyncInjector.configure() {
 		mapPrototype { WelcomeScene() }
 		mapPrototype { CardsScene() }
+		mapPrototype{ GameOver()}
 	}
 }

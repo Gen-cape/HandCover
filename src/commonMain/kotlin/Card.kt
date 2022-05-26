@@ -24,32 +24,6 @@ inline fun Container.card(
         description: String, btmp: Bitmap, callback:  Card.() -> Unit = {}
 ): Card = Card(easyWrap(description), btmp).addTo(this, callback).position(cPoint).draggableAsCard(cPoint)
 
-fun Card.setDraggableRules() {
-    val card = this
-    onCardDrag {
-        if (it.end) {
-            when (it.throwState) {
-                ThrowState.RIGHT -> {
-                    economy.suspection += suspectionEffect
-                    economy.sanity += sanityEffect
-                    economy.connections += connectionsEffect
-                    economy.money += moneyEffect
-                    card.pull()
-                }
-                ThrowState.LEFT -> {
-                    economy.suspection -= suspectionEffect
-                    economy.sanity -= sanityEffect
-                    economy.connections -= connectionsEffect
-                    economy.money -= moneyEffect
-                    card.pull()
-                }
-                ThrowState.CENTER -> {
-//                        println("Center")
-                }
-            }
-        }
-    }
-}
 class Card : Container {
     private var description: String
 
@@ -66,11 +40,6 @@ class Card : Container {
         image(btmp){scaledWidth = 202.0; scaledHeight = 181.0 }.alignLeftToLeftOf(this, 9)
     .alignTopToTopOf(this, 28).addTo(this)
     }
-    val suspectionEffect: Double = 0.0
-    val moneyEffect: Double = 0.0
-    val connectionsEffect: Double = 0.0
-    val sanityEffect: Double = 0.0
-    val pair = Pair("Df choice 1", "Df choice 2")
 
     fun pull() {
         this.removeFromParent()
