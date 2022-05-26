@@ -25,6 +25,6 @@ object MainModule : Module() {
 	override suspend fun AsyncInjector.configure() {
 		mapPrototype { WelcomeScene() }
 		mapPrototype { CardsScene() }
-		mapPrototype{ GameOver()}
+//		mapPrototype{ GameOver()}
 	}
 }

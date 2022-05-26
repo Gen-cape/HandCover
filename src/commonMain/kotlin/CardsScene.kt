@@ -1,16 +1,15 @@
 
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Point
 
-public class EventManager(){
-    var cardSwiped = false
-}
+
 public val cPoint = Point(143, 89)
+public val economy = Economy()
 enum class BgsColor(val color: RGBA){
     SUSPECTIONBG(RGBA(170, 56, 56)),
     CONNECTIONSBG(RGBA(174,179,171)),
@@ -18,15 +17,14 @@ enum class BgsColor(val color: RGBA){
     SANITYBG(RGBA(138,200,209)),
 }
 class CardsScene : Scene() {
+    var txtToRead = arrayListOf<String>("обро пожаловать, твой путь лежит на новую миссию")
+    var vfsToRead = arrayListOf<VfsFile>(resourcesVfs["c2.png"])
     override suspend fun Container.sceneInit() {
-         var events = EventManager()
-        var money: Int = 100
-        var suspection: Int = 100
-        var sanity: Int = 100
-        var connections : Int = 100
-         var left : String = "Нет"
-         var right : String = "Да"
-         var curr = 0
+
+        var deck = arrayListOf<Card>()
+        for (i in 0 until vfsToRead.size) {
+            deck.add(Card(txtToRead[i], vfsToRead[i].readBitmap()))
+        }
         solidRect(512, 512, RGBA(196, 196, 196)).xy(0, 0) // Color: c4c4c4
         solidRect(512, 62, RGBA(89, 59, 2)).xy(0, 450).alignBottomToBottomOf(sceneContainer) // Color: 593B02
         val _backgroundLayer = container {}
@@ -50,42 +48,29 @@ class CardsScene : Scene() {
             alignBottomToTopOf(cardBg)
         }.addTo(_backgroundLayer)
 
-        var choiceOne = text(choiceWrapper(left), color = Colors.WHITE) { position(11, 469) }
-        var choiceTwo = text(choiceWrapper(right), color = Colors.WHITE) { position(363, 469) }
-
-        fun SolidRect.changeSuspection(num: Int) {
+        fun SolidRect.changeSuspection(num: Double) {
             this.removeFromParent()
-            suspectionBg = solidRect(68, num, BgsColor.SUSPECTIONBG.color).alignLeftToLeftOf(cardBg)
+            suspectionBg = solidRect(68.0, num, BgsColor.SUSPECTIONBG.color).alignLeftToLeftOf(cardBg)
                     .alignBottomToTopOf(cardBg).addTo(_backgroundLayer)
         }
 
-        fun SolidRect.changeConnections(num: Int) {
+        fun SolidRect.changeConnections(num: Double) {
             this.removeFromParent()
-            connectionsBg = solidRect(68, num, BgsColor.CONNECTIONSBG.color).alignLeftToRightOf(suspectionBg)
+            connectionsBg = solidRect(68.0, num, BgsColor.CONNECTIONSBG.color).alignLeftToRightOf(suspectionBg)
                     .alignBottomToTopOf(cardBg).addTo(_backgroundLayer)
         }
 
-        fun SolidRect.changeMoney(num: Int) {
+        fun SolidRect.changeMoney(num: Double) {
             this.removeFromParent()
-            moneyBg = solidRect(68, num, BgsColor.MONEYBG.color).alignLeftToRightOf(connectionsBg)
+            moneyBg = solidRect(68.0, num, BgsColor.MONEYBG.color).alignLeftToRightOf(connectionsBg)
                     .alignBottomToTopOf(cardBg).addTo(_backgroundLayer)
         }
 
-        fun SolidRect.changeSanity(num: Int) {
+        fun SolidRect.changeSanity(num: Double) {
             this.removeFromParent()
-            sanityBg = solidRect(68, num, BgsColor.SANITYBG.color).alignLeftToRightOf(moneyBg)
+            sanityBg = solidRect(68.0, num, BgsColor.SANITYBG.color).alignLeftToRightOf(moneyBg)
                     .alignBottomToTopOf(cardBg).addTo(_backgroundLayer)
         }
-
-//        fun Text.updateChoiceOne() {
-//            var choiceOne = text(choiceWrapper("TEST"), color = Colors.RED) { position(11, 469) }
-//            this.removeFromParent()
-//        }
-//
-//        fun Text.updateChoiceTwo() {
-//            this.removeFromParent()
-//            var choiceTwo = text(choiceWrapper(right), color = Colors.RED) { position(363, 469) }
-//        }
         image(resourcesVfs["cultist.png"].readBitmap()) {
             scaledWidth = 68.0
             scaledHeight = 68.0
@@ -95,63 +80,20 @@ class CardsScene : Scene() {
             scaledWidth = 68.0
             scaledHeight = 68.0
         }.addTo(_midLayer)
-                .alignTopToTopOf(connectionsBg).alignLeftToLeftOf(connectionsBg)
+                .alignTopToTopOf(connectionsBg, ).alignLeftToLeftOf(connectionsBg)
         image(resourcesVfs["cash.png"].readBitmap()) {
             scaledWidth = 68.0
             scaledHeight = 68.0
         }.addTo(_midLayer)
-                .alignTopToTopOf(moneyBg).alignLeftToLeftOf(moneyBg)
+                .alignTopToTopOf(moneyBg, ).alignLeftToLeftOf(moneyBg, )
         image(resourcesVfs["meditation.png"].readBitmap()) {
             scaledWidth = 68.0
             scaledHeight = 68.0
         }.alignTopToTopOf(sanityBg, ).alignLeftToLeftOf(sanityBg).addTo(_midLayer)
-        fun Card.setDraggableRules(choices1:String, choices2 : String, suspectionEffect: Int,
-                                   moneyEffect: Int, connectionsEffect: Int, sanityEffect: Int) {
-            val choice = choices1
-            val card = this
-            onCardDrag {
-                if (it.end) {
-                    when (it.throwState) {
-                        ThrowState.RIGHT -> {
-//                            left = choice
-//                            right = choices2
-//                            choiceOne.updateChoiceOne()
-//                            choiceTwo.updateChoiceTwo()
-                            suspectionBg.changeSuspection(suspection)
-                            moneyBg.changeMoney(money)
-                            connectionsBg.changeConnections(connections)
-                            suspection += suspectionEffect
-                            sanity += sanityEffect
-                            connections += connectionsEffect
-                            money += moneyEffect
-                            card.pull()
-                        }
-                        ThrowState.LEFT -> {
-//                            left = choice
-//                            right = choices2
-//                            choiceOne.updateChoiceOne()
-//                            choiceTwo.updateChoiceTwo()
-                            suspection -= suspectionEffect
-                            sanity -= sanityEffect
-                            connections -= connectionsEffect
-                            money -= moneyEffect
-                            card.pull()
-                        }
-                        ThrowState.CENTER -> {
-//                            left = choice
-//                            right = choices2
-//                            choiceOne.updateChoiceOne()
-//                            choiceTwo.updateChoiceTwo()
-//                        println("Center")
-                        }
-                    }
-                }
-            }
-        }
-        card("Приветствую, перейду сразу к делу. Ты должен выкрасть документы и провести шпионаж", resourcesVfs["c1.png"].readBitmap())
-                .setDraggableRules("Принято", "Выдвигаюсь", 10, 5, 2, 10);
-        card("Вы заселились в новый дом, стоит ли быть приветливыми со всеми?", resourcesVfs["q2.png"].readBitmap())
-                .setDraggableRules("Нет, это подозрительно", "Обязательно нужно быть приветливым", 5, 0, 10, -10);
-//        card("тест тест тест тест тест  тест тест  тест тест  тест тест", resourcesVfs["korge.png"].readBitmap()).setDraggableRules()
+        card("Добро пожаловать, странник", resourcesVfs["c2.png"].readBitmap()).setDraggableRules()
+        card("хмм?", resourcesVfs["c1.png"].readBitmap()).setDraggableRules()
+        card("KorGE Engine", resourcesVfs["korge.png"].readBitmap()).setDraggableRules()
+        card("Тест отображения цветного предмета", resourcesVfs["d1.png"].readBitmap()).setDraggableRules()
+        card("Рассвет", resourcesVfs["q3.png"].readBitmap()).setDraggableRules()
     }
 }
